@@ -1,0 +1,18 @@
+<!doctype html>
+%html
+  %head
+    %meta{:charset => "utf-8"}/
+    = wicked_pdf_stylesheet_link_tag "pdf"
+    = wicked_pdf_javascript_include_tag "number_pages"
+    :css
+      table {width: 100%;}
+      th, td { border: 1px solid black;}
+      tr.wordline { height: 200px; font-size:15px; }
+      td {padding:15px;}
+      td.text-center { text-align: center; font-size:30px; }
+      tr, td, th { page-break-inside: avoid;}
+  %body{:onload => "number_pages"}
+    #header
+      //= wicked_pdf_image_tag 'mysite.jpg'
+    #content
+      = yield

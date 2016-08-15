@@ -1,0 +1,16 @@
+.index
+  .row
+    %blockquote
+      %p 没有什么能够阻挡，我对自由的向往
+
+  - events.each do |event|
+    .row
+      %hr
+      ="@#{event.name} 制作了《#{event.book}》书中的#{event.words.split(" ").count}张单词卡片。"
+      %span.pull-right
+        =" #{time_ago_in_words(event.created_at)}前  "
+
+  #static-pagination
+    = will_paginate events
+
+%br
