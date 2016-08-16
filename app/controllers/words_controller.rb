@@ -21,17 +21,18 @@ class WordsController < ApplicationController
       cookies[:card_name] = {value: @event.name, expires: 1.year.from_now}
       cookies[:card_age]  = {value: @event.age, expires: 1.year.from_now}
       cookies[:card_book] = {value: @event.book, expires: 1.year.from_now}
-      @event.save 
 
       @source = @event.words
       logger.debug "translate #{@source}..."
       @target = Hash.new
 
+      n = 0
       if @source.include? "#"
         # not #To be or not to be# follow #Harry potter, follow me# 
         @source.scan(/([[:word:]]+)\ *#(.*?)#/).each do |word, sentence|
           begin
             @target[word] = convert(word, sentence)
+            n += 1
           rescue URI::InvalidURIError
             logger.error "Error in translating #{word}, ingnore."
             next
@@ -42,12 +43,16 @@ class WordsController < ApplicationController
         @source.split(",").each do |word|
           begin
             @target[word] = convert(word)
+            n += 1
           rescue URI::InvalidURIError
             logger.error "Error in translating #{word}, ingnore."
             next
           end
         end
       end
+      @event.count = n
+      @event.save 
+
       #render :json => @target.to_json
       #render 'translate'
       respond_to do |format|

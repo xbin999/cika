@@ -18,12 +18,33 @@
 
 body {
   padding-top: 70px;
+  .navbar-nav.pull-left > li { float: left; }
+  .navbar-nav.pull-right > li { float: left; }
 }
 
 /*
  * Override Bootstrap's default container.
  */
-
+@media(max-width:543px) {
+  .container {
+    width: 260px;
+  }
+}
+@media(min-width:544px) {
+  .container {
+    width: 400px;
+  }
+}
+@media(min-width:768px) {
+  .container {
+    width: 640px;
+  }
+}
+@media(min-width:992px) {
+  .container {
+    width: 800px;
+  }
+}
 @media (min-width: 1200px) {
   .container {
     width: 970px;

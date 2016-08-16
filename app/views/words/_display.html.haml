@@ -6,7 +6,7 @@
   - events.each do |event|
     .row
       %hr
-      ="@#{event.name} 制作了《#{event.book}》书中的#{event.words.split(" ").count}张单词卡片。"
+      ="@#{event.name} 制作了《#{event.book}》书中的#{event.count || event.words.split(" ").count}张单词卡片。"
       %span.pull-right
         =" #{time_ago_in_words(event.created_at)}前  "
 
