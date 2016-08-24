@@ -5,4 +5,4 @@ Paperclip::Attachment.default_options[:qiniu_credentials] = {
 }
 Paperclip::Attachment.default_options[:bucket] = 'cika'
 Paperclip::Attachment.default_options[:use_timestamp] = false
-Paperclip::Attachment.default_options[:qiniu_host] = 'http://7xkty5.com1.z0.glb.clouddn.com'
+Paperclip::Attachment.default_options[:qiniu_host] = 'http://ocepqt474.bkt.clouddn.com'
