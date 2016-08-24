@@ -46,10 +46,12 @@ group :development do
   gem 'spring'
 end
 
-gem 'bootstrap-sass', '~> 3.3.0'
 gem 'haml', '~> 4.0.6'
-gem 'devise'
+gem 'haml-rails'
+
+gem 'bootstrap-sass', '~> 3.3.0'
 gem 'simple_form', '~> 3.1.0'
+gem 'devise'
 gem 'will_paginate'
 gem 'bootstrap-will_paginate'
 
@@ -57,6 +59,10 @@ gem 'nokogiri'
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary-edge', '~> 0.12.3.0'
 gem "bing_translator", "~> 4.5.0"
+
+gem 'paperclip'
+#gem 'paperclip-qiniu'
+gem 'paperclip-qiniu', :git => "git://github.com/lidaobing/paperclip-qiniu"
 
 group :production do
   gem 'pg'

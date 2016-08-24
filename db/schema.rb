@@ -11,16 +11,38 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160816085342) do
+ActiveRecord::Schema.define(version: 20160824084326) do
+
+  create_table "books", force: :cascade do |t|
+    t.string   "name"
+    t.string   "author"
+    t.string   "isbn"
+    t.string   "press"
+    t.text     "description"
+    t.float    "grade_level"
+    t.integer  "lexile_level"
+    t.string   "douban_link"
+    t.string   "scholastic_link"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.string   "cover_file_name"
+    t.string   "cover_content_type"
+    t.integer  "cover_file_size"
+    t.datetime "cover_updated_at"
+    t.integer  "page_number"
+  end
 
   create_table "events", force: :cascade do |t|
-    t.string   "name"
+    t.text     "name"
     t.integer  "age"
-    t.string   "book"
+    t.text     "book_name"
     t.text     "words"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer  "count"
+    t.integer  "event_type"
+    t.integer  "book_id"
+    t.integer  "user_id"
   end
 
   create_table "users", force: :cascade do |t|

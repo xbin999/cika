@@ -10,7 +10,10 @@ Rails.application.routes.draw do
   get  '/translate',  to: 'words#new'
   post '/translate',  to: 'words#translate'
   get  '/events',     to: 'words#index'
+  get  '/search',     to: 'books#search'
 
+  resources :books
+  
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

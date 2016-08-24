@@ -1,0 +1,24 @@
+//= javascript_include_tag "//www.google.com/jsapi", "chartkick"
+- if !@books.empty?
+  .index
+    - @books.each do |book|
+      .row
+        %hr
+        .book.col-sm-1.small
+          = link_to image_tag(qiniu_image_path(book.cover.url, :thumbnail => '100x100>')), book_path(book)
+        
+        .info.col-sm-6.col-sm-offset-1
+          %p.name= link_to book.name, book_path(book)
+          .small
+            %p
+              = "#{book.author} / #{book.press} / #{book.page_number}页 / #{book.grade_level} / #{book.lexile_level}L"
+            %p 
+              = link_to "豆瓣", book.douban_link if book.douban_link
+              = link_to "Scholastic", book.scholastic_link if book.scholastic_link
+       
+    #static-pagination
+      = will_paginate @books
+- else 
+  %h3 没有找到“#{@query}”
+  %p
+    %a.btn.btn-success{:href => new_book_path("book_name" => "#{@query}")} 新增一本

@@ -10,9 +10,16 @@ class WordsController < ApplicationController
 
   def new
     @event = Event.new
-    @event.name = cookies[:card_name]
+    if user_signed_in?
+      @event.name = current_user.name
+      @event.user_id = current_user.id
+    else
+      @event.name = cookies[:card_name]
+    end
     @event.age = cookies[:card_age]
-    @event.book = cookies[:card_book]
+    #@event.book_name = cookies[:card_book]
+    @event.book_id = params[:book_id]
+    @event.book_name = params[:book_name]
   end
 
   def translate
@@ -20,7 +27,7 @@ class WordsController < ApplicationController
     if @event.valid?
       cookies[:card_name] = {value: @event.name, expires: 1.year.from_now}
       cookies[:card_age]  = {value: @event.age, expires: 1.year.from_now}
-      cookies[:card_book] = {value: @event.book, expires: 1.year.from_now}
+      cookies[:card_book] = {value: @event.book_name, expires: 1.year.from_now}
 
       @source = @event.words
       logger.debug "translate #{@source}..."
@@ -51,6 +58,7 @@ class WordsController < ApplicationController
         end
       end
       @event.count = n
+      @event.event_type = Event.event_types["newcard"]
       @event.save 
 
       #render :json => @target.to_json
@@ -98,7 +106,7 @@ private
   end
 
   def event_params
-    params.require(:event).permit(:name, :words, :age, :book)
+    params.require(:event).permit(:name, :words, :age, :book_name, :book_id, :user_id)
   end
 
 end

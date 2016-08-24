@@ -1,0 +1,26 @@
+%h3= @book.name
+%br
+
+.row
+  .subjectwrap
+
+    #cover.col-sm-2
+      = image_tag qiniu_image_path(@book.cover.url, :thumbnail => '150x150>')
+
+    .info.col-sm-5.col-sm-offset-1.small
+      %p.author= "作者：#{@book.author}"
+      %p.isbn= "ISBN：#{@book.isbn}"
+      %p.press= "出版社：#{@book.press}"
+      %p.page_numeber= "页数：#{@book.page_number}"
+      %p.grade_level= "年级水平：#{@book.grade_level}"
+      %p.lexile_level= "兰斯分值：#{@book.lexile_level}L"
+      %p.douban
+        = link_to "豆瓣", @book.douban_link if @book.douban_link
+        = link_to "Scholastic", @book.scholastic_link if @book.scholastic_link
+
+//= link_to "制作词卡", translate_path
+%a.btn.btn-success{:href => translate_path("book_id" => "#{@book.id}", "book_name" => "#{@book.name}")} 制作词卡
+
+.description
+  内容简介：
+  %p.description= simple_format(@book.description)

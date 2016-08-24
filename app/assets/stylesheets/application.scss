@@ -20,6 +20,10 @@ body {
   padding-top: 70px;
   .navbar-nav.pull-left > li { float: left; }
   .navbar-nav.pull-right > li { float: left; }
+
+  .form-inline .form-group input {
+    width: 300px;
+  }
 }
 
 /*
