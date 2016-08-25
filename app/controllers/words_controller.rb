@@ -1,9 +1,13 @@
+# encoding: utf-8
+
 require 'nokogiri'
 require 'open-uri'
 require 'json'
 require 'bing_translator'
 
 class WordsController < ApplicationController
+  before_action :show_message, only: [:new]
+
   def index
     @events = Event.all.paginate(page: params[:page], per_page: 20).order(created_at: :desc)
   end
@@ -107,6 +111,12 @@ private
 
   def event_params
     params.require(:event).permit(:name, :words, :age, :book_name, :book_id, :user_id)
+  end
+
+  def show_message
+    if !user_signed_in?
+      flash[:notice] = "建议先登录，选择对应的书再制卡。"
+    end
   end
 
 end
