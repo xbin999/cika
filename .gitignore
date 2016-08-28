@@ -20,4 +20,4 @@
 /config/mysecrets.yml
 
 /.powenv
-/..byebug_history
+/.byebug_history

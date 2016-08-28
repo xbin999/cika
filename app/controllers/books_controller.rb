@@ -1,5 +1,6 @@
 class BooksController < ApplicationController
   before_action :authenticate_user!, only: [:new]
+  before_action :authenticate_admin, only: [:edit]
   before_action :find_book, only: [:show, :edit, :update, :destroy]
   def index
     #@books = Book.all.order("created_at DESC")
@@ -12,7 +13,6 @@ class BooksController < ApplicationController
   def new
     @book = Book.new
     @book.name = params[:book_name]
-
   end
 
   def create
@@ -83,5 +83,15 @@ class BooksController < ApplicationController
 
   def find_book
     @book = Book.find(params[:id])
+  end
+
+  def authenticate_admin
+    authenticate_user!
+
+    if current_user.admin?
+      return
+    else
+      redirect_to root_path
+    end
   end
 end
