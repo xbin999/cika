@@ -20,7 +20,7 @@
 
 //= link_to "制作词卡", translate_path
 %a.btn.btn-success{:href => translate_path("book_id" => "#{@book.id}", "book_name" => "#{@book.name}")} 制作词卡
-- if current_user.admin?
+- if !current_user.nil? && current_user.admin?
   %a.btn.btn-success{:href => edit_book_path(@book)} 修改书籍
 
 .description

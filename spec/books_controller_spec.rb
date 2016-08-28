@@ -62,4 +62,34 @@ describe BooksController, :type => :controller do
       it "renders the :search template"
     end
   end
+
+  describe "GET #show" do
+
+    describe "before login user - " do
+      
+      it "render the show template" do
+        book = FactoryGirl.create(:book)
+        get :show, id: book.id
+
+        Rails.logger.debug "==== test in rspec #{response.body}"
+
+        #expect(subject.current_user).to be_nil
+        expect(response).to render_template("show")
+        #expect(response).to be_success
+      end
+    end
+
+    describe "after login normal user - " do
+      login_user #as normal user
+
+      it "display no edit button" 
+    end
+
+    describe "after login admin user - " do
+      login_admin #as admin
+
+      it "display a edit button" 
+    end
+  end
+
 end
