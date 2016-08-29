@@ -21,3 +21,6 @@
 
 /.powenv
 /.byebug_history
+
+# Ignore app utils
+/app/utils

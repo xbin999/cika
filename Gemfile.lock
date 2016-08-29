@@ -283,6 +283,9 @@ GEM
     wicked_pdf (1.0.6)
     will_paginate (3.1.0)
     wkhtmltopdf-binary-edge (0.12.3.0)
+    yaml_db (0.4.0)
+      rails (>= 3.0, < 5.1)
+      rake (>= 0.8.7)
 
 PLATFORMS
   ruby
@@ -319,6 +322,7 @@ DEPENDENCIES
   wicked_pdf
   will_paginate
   wkhtmltopdf-binary-edge (~> 0.12.3.0)
+  yaml_db
 
 BUNDLED WITH
    1.12.5

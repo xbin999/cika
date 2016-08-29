@@ -71,3 +71,5 @@ gem 'paperclip-qiniu', :git => "git://github.com/lidaobing/paperclip-qiniu"
 group :production do
   gem 'pg'
 end
+
+gem 'yaml_db'
