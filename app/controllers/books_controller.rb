@@ -60,9 +60,10 @@ class BooksController < ApplicationController
   end
 
   def search
-    @query = params[:search][:name]
+    # case insensitive 
+    @query = params[:search][:name].downcase
     logger.debug "===> search #{@query} ..."
-    @books = Book.where("name LIKE ?", "%#{@query}%").paginate(page: params[:page], per_page: 15)
+    @books = Book.where("lower(name) LIKE ?", "%#{@query}%").paginate(page: params[:page], per_page: 15)
   end
 
   private
