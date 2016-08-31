@@ -11,12 +11,12 @@
     = render 'shared/navigation'
     .container
       .row
-        .col-sm-8
+        .col-md-8.col-sm-8
           - flash.each do |name, msg|
             = content_tag :div, msg, class: "alert alert-info"
           = yield
           %br
-        .col-sm-3.col-sm-offset-1
+        .col-md-3.col-md-offset-1.col-sm-3.col-sm-offset-1
           = render 'shared/sidebar'
     %footer.footer
       .container
