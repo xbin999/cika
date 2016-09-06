@@ -1,0 +1,35 @@
+.index
+
+  %h3= "我的词卡..."
+  %hr
+  - mycards.each_slice(4) do |rows|
+    .row
+      - rows.each do |cards|
+        .subjectwrap
+
+          #cover.col-sm-1
+            - if cards.book != nil
+              = link_to image_tag(qiniu_image_path(cards.book.cover.url, :thumbnail => '100x100>')), book_path(cards.book_id)
+
+          .info.col-sm-1.col-sm-offset-1.small
+            %a{:href => event_user_words_path(cards.id)}#{truncate(cards.words, length:24)}
+    %br
+
+  %h3= "最新词卡..."
+  %hr
+  - recentcards.each do |cards|
+    .row
+      .subjectwrap
+
+        #cover.col-sm-2
+          - if cards.book != nil
+            = link_to image_tag(qiniu_image_path(cards.book.cover.url, :thumbnail => '100x100>')), book_path(cards.book_id)
+
+        .info.col-sm-5.col-sm-offset-1.small
+          %p= "制卡人：#{cards.name}"
+          %p= "适用年龄：#{cards.age}"
+          %p= "制卡日期：#{cards.created_at.to_date}"
+          %a{:href => event_user_words_path(cards.id)}#{cards.words}
+    %br
+
+%br

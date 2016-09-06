@@ -1,0 +1,23 @@
+%h3
+  - if @event.book_id != nil
+    %a{:href => book_path(@event.book_id)}#{@event.book_name}
+  - else
+    #{@event.book_name}
+%br
+
+.row
+  .subjectwrap
+
+    #cover.col-sm-2
+      - if @event.book_id != nil
+        = link_to image_tag(qiniu_image_path(@event.book.cover.url, :thumbnail => '150x150>')), book_path(@event.book_id)
+
+    .info.col-sm-5.col-sm-offset-1.small
+      %p= "制卡人：#{@event.name}"
+      %p= "适用年龄：#{@event.age}"
+      %p= "制卡日期：#{@event.created_at.to_date}"
+      %a.btn.btn-success{:href => event_user_words_path(@event.id, :format => :pdf), :target => '_blank'} 生成PDF
+
+%br
+
+=render :template => 'words/translate.html.haml'
