@@ -50,10 +50,10 @@ class WordsController < ApplicationController
         # not #To be or not to be# follow #Harry potter, follow me# 
         @source.scan(/([[:word:]]+)\ *#(.*?)#/).each do |word, sentence|
           begin
-            #@target[word] = convert(word, sentence)
-            #@target[word] = convert2object(word).to_cover(sentence)
-            @target[convert2object(word)] = sentence
-            n += 1
+            if !word.strip.blank? 
+              @target[convert2object(word)] = sentence
+              n += 1
+            end
           rescue URI::InvalidURIError
             logger.error "Error in translating #{word}, ingnore."
             next
@@ -61,17 +61,17 @@ class WordsController < ApplicationController
         end
       else
         if @source.include? ","
-          sep = ','
+          sep = ","
         else
-          sep = ' '
+          sep = " "
         end
         # hello,world,hurry up,good
         @source.split(sep).each do |word|
           begin
-            #@target[word] = convert(word)
-            #@target[word] = convert2object(word).to_cover
-            @target[convert2object(word)] = ""
-            n += 1
+            if !word.strip.blank? 
+              @target[convert2object(word)] = ""
+              n += 1
+            end
           rescue URI::InvalidURIError
             logger.error "Error in translating #{word}, ingnore."
             next
