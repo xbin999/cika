@@ -1,5 +1,6 @@
 %table.table-bordered
   - @target.each do |word, value|
     %tr.wordline
-      %td.text-center= word
-      %td{:style => "width: 50%"}= simple_format value.join("\n")
+      %td.text-center= word.name
+      %td{:style => "width: 50%"}= simple_format word.to_cover(value).join("\n")
+      /%td{:style => "width: 50%"}= simple_format value.join("\n")

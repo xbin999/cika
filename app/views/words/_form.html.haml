@@ -2,11 +2,12 @@
 %br
 
 .record-form
-  = simple_form_for :event, :url => translate_path(:format => :pdf), :method => :post, html: { multipart: true, class: 'form-horizontal'}, wrapper: :horizontal_form do |f|
+  /= simple_form_for :event, :url => translate_path(:format => :pdf), :method => :post, html: { multipart: true, class: 'form-horizontal'}, wrapper: :horizontal_form do |f|
+  = simple_form_for event, :url => translate_path, :method => :post, html: { multipart: true, class: 'form-horizontal'}, wrapper: :horizontal_form do |f|
     = f.input :name, as: :string, label: '姓名', input_html: {class:  'form-control'}
     = f.input :age, label: '年龄', input_html: {class:  'form-control'}
     = f.input :book_name, as: :string, label: '书名', input_html: {class:  'form-control'}
-    = f.input :words, label: '输入单词', hint: '输入中英文皆可，支持两种方式：一是单词以逗号分隔，如hello,world,hurry up,good；二是单词加#例句#，如name #What is your name?#', as: :text, input_html: {class:  'form-control', rows: 10}
+    = f.input :words, label: '输入单词', hint: '输入中英文皆可，支持两种方式：一是单词以逗号分隔，如hello,world,hurry up,good；二是单词加#例句#，如name #What is your name?#', as: :text, input_html: {class:  'form-control', rows: 10}, required: true
     
     = f.input :book_id, as: :integer, :as => :hidden, input_html: {class:  'form-control'}
     = f.input :user_id, as: :integer, :as => :hidden, input_html: {class:  'form-control'}

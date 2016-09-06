@@ -10,10 +10,14 @@ Rails.application.routes.draw do
   get  '/translate',  to: 'words#new'
   post '/translate',  to: 'words#translate'
   get  '/events',     to: 'words#index'
+  get  '/cards',     to: 'words#cards'
   get  '/search',     to: 'books#search'
 
-  resources :books
-  
+  resources :books, :except => [:destroy]
+  resources :events, :only => [] do
+    resources :user_words, :only => [:index]
+  end
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
