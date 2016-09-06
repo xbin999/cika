@@ -60,7 +60,7 @@ class WordsController < ApplicationController
           end
         end
       else
-        if source.include? ","
+        if @source.include? ","
           sep = ','
         else
           sep = ' '
