@@ -44,37 +44,23 @@ class WordsController < ApplicationController
       @source = @event.words
       logger.debug "translate #{@source}..."
       @target = Hash.new
-
+      @error_words = Array.new
       n = 0
-      if @source.include? "#"
+      sep = get_sep(@source)
+
+      if sep == "#"
         # not #To be or not to be# follow #Harry potter, follow me# 
         @source.scan(/([[:word:]]+)\ *#(.*?)#/).each do |word, sentence|
-          begin
-            if !word.strip.blank? 
-              @target[convert2object(word)] = sentence
-              n += 1
-            end
-          rescue URI::InvalidURIError
-            logger.error "Error in translating #{word}, ingnore."
-            next
+          if saveto_targets(word, sentence)
+            n += 1
           end
         end
       else
-        if @source.include? ","
-          sep = ","
-        else
-          sep = " "
-        end
         # hello,world,hurry up,good
+        # or hello word 
         @source.split(sep).each do |word|
-          begin
-            if !word.strip.blank? 
-              @target[convert2object(word)] = ""
-              n += 1
-            end
-          rescue URI::InvalidURIError
-            logger.error "Error in translating #{word}, ingnore."
-            next
+          if saveto_targets(word)
+            n += 1
           end
         end
       end
@@ -85,7 +71,11 @@ class WordsController < ApplicationController
       end
       if @event.save 
         logger.info("=== Success in saving event: #{@event.id}")
-        redirect_to event_user_words_path(@event), notice: "Successfully created new cards"
+        if @error_words.empty? 
+          redirect_to event_user_words_path(@event), notice: "成功创建词卡。"
+        else
+          redirect_to event_user_words_path(@event), notice: "成功创建词卡，剩余错误单词: #{@error_words.join(',')}"
+        end
       else
         logger.error("=== Error in saving event...#{@event.errors.full_messages}")
         flash[:error] = @event.errors.full_messages.to_sentence 
@@ -141,14 +131,19 @@ private
   def convert2object(source)
     source = source.strip
     word = Word.find_by name: source
-    if word == nil     
+    if word == nil
+      begin
+        # http://fanyi.youdao.com/openapi.do?keyfrom=XXXXXX&key=XXXXXXXX&type=data&doctype=json&version=1.1&q=hello
+        logger.debug "http://fanyi.youdao.com/openapi.do?keyfrom=#{Rails.configuration.mysecrets['keyfrom']}&key=#{Rails.configuration.mysecrets['key']}&type=data&doctype=json&version=1.1&q=#{source}"
+        doc = JSON.parse(open(URI.escape("http://fanyi.youdao.com/openapi.do?keyfrom=#{Rails.configuration.mysecrets['keyfrom']}&key=#{Rails.configuration.mysecrets['key']}&type=data&doctype=json&version=1.1&q=#{source}")).read)
+      rescue URI::InvalidURIError
+        logger.error "Error in translating #{word}, ingnore."
+        return nil
+      end
+
       word = Word.new
       word.name = source
       word.translate_tool = "youdao"
-
-      # http://fanyi.youdao.com/openapi.do?keyfrom=XXXXXX&key=XXXXXXXX&type=data&doctype=json&version=1.1&q=hello
-      logger.debug "http://fanyi.youdao.com/openapi.do?keyfrom=#{Rails.configuration.mysecrets['keyfrom']}&key=#{Rails.configuration.mysecrets['key']}&type=data&doctype=json&version=1.1&q=#{source}"
-      doc = JSON.parse(open(URI.escape("http://fanyi.youdao.com/openapi.do?keyfrom=#{Rails.configuration.mysecrets['keyfrom']}&key=#{Rails.configuration.mysecrets['key']}&type=data&doctype=json&version=1.1&q=#{source}")).read)
 
       if doc.fetch('basic',{}).fetch('explains',nil) != nil
         if doc.fetch('basic',{}).fetch('us-phonetic',nil) != nil
@@ -167,13 +162,42 @@ private
         end
       end
       if word.save 
-        logger.info("=== Success in saving word: #{word.id}")
+        logger.info("=== Success in saving word: #{word.id}:#{word.name}")
       else
         logger.error("=== Error in saving word...#{word.errors.full_messages}")
+        return nil
       end
     end
 
     return word
+  end
+
+  def saveto_targets(word, sentence=nil)
+    rv = false
+
+    if !word.strip.blank? 
+      w = convert2object(word)
+      if w != nil
+        @target[w] = sentence
+        rv = true
+      else
+        @error_words << word
+      end
+    end
+    return rv
+  end
+
+  def get_sep(source)
+    if source.include? "#"
+      sep = "#"
+    else
+      if @source.include? ","
+        sep = ","
+      else
+        sep = " "
+      end
+    end
+    return sep
   end
 
   def event_params

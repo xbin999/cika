@@ -40,15 +40,20 @@ describe BooksController, :type => :controller do
   end
   
   describe "POST #create" do
+
     context "with valid attributes" do
-      it "saves the new book in the database"
-      it "redirects to the book page"
+      it "does save the new book in the database" do
+        expect{
+          post :create, book: FactoryGirl.attributes_for(:book_with_upload)
+        }.to change(Book, :count).by(1)
+      end      
+
+      it "redirects to the book page" do
+        post :create, book: FactoryGirl.attributes_for(:book_with_upload)
+        expect(response).to redirect_to(book_path(assigns[:book]))
+      end
     end
     
-    context "with invalid attributes" do
-      it "does not save the new book in the database"
-      it "re-renders the :new template"
-    end
   end 
 
   describe "GET #search" do
@@ -65,30 +70,15 @@ describe BooksController, :type => :controller do
 
   describe "GET #show" do
 
-    describe "before login user - " do
-      
-      it "render the show template" do
-        book = FactoryGirl.create(:book)
-        get :show, id: book.id
+    it "render the show template" do
+      book = FactoryGirl.create(:book)
+      get :show, id: book.id
 
-        Rails.logger.debug "==== test in rspec #{response.body}"
+      Rails.logger.debug "==== test in rspec #{response.body}"
 
-        #expect(subject.current_user).to be_nil
-        expect(response).to render_template("show")
-        #expect(response).to be_success
-      end
-    end
-
-    describe "after login normal user - " do
-      login_user #as normal user
-
-      it "display no edit button" 
-    end
-
-    describe "after login admin user - " do
-      login_admin #as admin
-
-      it "display a edit button" 
+      #expect(subject.current_user).to be_nil
+      expect(response).to render_template("show")
+      #expect(response).to be_success
     end
   end
 
