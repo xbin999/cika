@@ -14,9 +14,9 @@ class WordsController < ApplicationController
 
   def cards
     if user_signed_in?
-      @mycards = Event.where("user_id=? and event_type=?", current_user.id, Event.event_types["newcard"]).paginate(page: params[:page], per_page: 20).order(created_at: :desc)
+      @mycards = Event.includes(:book).where("user_id=? and event_type=?", current_user.id, Event.event_types["newcard"]).paginate(page: params[:page], per_page: 20).order(created_at: :desc)
     end
-    @recentcards = Event.where("event_type=?", Event.event_types["newcard"]).paginate(page: params[:page], per_page: 20).order(created_at: :desc)
+    @recentcards = Event.includes(:book).where("event_type=?", Event.event_types["newcard"]).paginate(page: params[:page], per_page: 20).order(created_at: :desc)
   end
 
   def new
