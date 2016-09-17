@@ -6,15 +6,16 @@
   = simple_form_for book, html: { multipart: true, class: 'form-horizontal'}, wrapper: :horizontal_form, wrapper_mappings: {file: :horizontal_file_input} do |f|
 
     = f.input :name, label: '书名', placeholder: "书名", input_html: {class:  'form-control'}
-    = f.input :author, label: '作者', placeholder: "作者名称", input_html: {class:  'form-control'}  
-    = f.input :isbn, label: 'ISBN', input_html: {class:  'form-control'}  
-    = f.input :press, label: '出版社', input_html: {class:  'form-control'}  
-    = f.input :page_number, label: '页数', input_html: {class:  'form-control'}  
-    = f.input :cover, label: '封面', input_html: {class:  'form-control'}  
-    = f.input :description, label: '内容简介', as: :text, input_html: {class:  'form-control', rows: 5}  
+    = f.input :author, label: '作者', placeholder: "作者名称", input_html: {class:  'form-control'}
+    = f.input :isbn, label: 'ISBN', input_html: {class:  'form-control'}
+    = f.input :press, label: '出版社', input_html: {class:  'form-control'}
+    = f.input :page_number, label: '页数', input_html: {class:  'form-control'}
+    = f.input :cover, label: '封面', input_html: {class:  'form-control'}
+    = f.input :tag_list, as: :text, label: '分类', hint: '以,间隔', input_html: {class:  'form-control'}
+    = f.input :description, label: '内容简介', as: :text, input_html: {class:  'form-control', rows: 5}
     = f.input :douban_link, label: '豆瓣链接', placeholder: 'https://book.douban.com/subject/XXXXXXXX/', hint: '豆瓣上该书的链接地址，查看评分和书评。',input_html: {class:  'form-control'}
-    = f.input :scholastic_link, label: 'Scholastic链接', placeholder: 'http://www.scholastic.com/parents/book/XXXXXXXX', hint: 'Scholastic网站该书的链接地址，查询Grade Level Equivalent（年级水平）和Lexile Measure（兰斯分值）。', input_html: {class:  'form-control'} 
-    = f.input :grade_level, label: '年级水平', placeholder: "类似以5.9表示", input_html: {class:  'form-control'}      
-    = f.input :lexile_level, label: '兰斯分值(L)', placeholder: "类似以700表示", input_html: {class:  'form-control'}  
-      
+    = f.input :scholastic_link, label: 'Scholastic链接', placeholder: 'http://www.scholastic.com/parents/book/XXXXXXXX', hint: 'Scholastic网站该书的链接地址，查询Grade Level Equivalent（年级水平）和Lexile Measure（兰斯分值）。', input_html: {class:  'form-control'}
+    = f.input :grade_level, label: '年级水平', placeholder: "类似以5.9表示", input_html: {class:  'form-control'}
+    = f.input :lexile_level, label: '兰斯分值(L)', placeholder: "类似以700表示", input_html: {class:  'form-control'}
+
     = f.button :submit, "保存", class: "btn btn-success btn-lg btn-block", :disable_with => "Submitting…"

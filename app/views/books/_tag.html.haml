@@ -1,0 +1,3 @@
+/- ActsAsTaggableOn::Tag.most_used(10).each do |tag|
+- Book.tag_counts_on(:tags).limit(20).order('count desc').each do |tag|
+	= link_to tag.name, books_path(:tag => tag.name)

@@ -1,4 +1,5 @@
 class UserWordsController < ApplicationController
+  
   def index
     begin
       @event = Event.find(params[:event_id])

@@ -1,6 +1,12 @@
 <h2>编辑 <%= resource_name.to_s.humanize %></h2>
 
-<%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+<%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name),
+  html: { method: :put, class: 'form-horizontal' },
+  wrapper: :horizontal_form,
+  wrapper_mappings: {
+    radio_buttons: :horizontal_radio_and_checkboxes,
+    file: :horizontal_file_input
+  }) do |f| %>
   <%= f.error_notification %>
 
   <div class="form-inputs">
@@ -11,6 +17,32 @@
     <% end %>
 
     <%= f.input :name, label: '昵称', required: true %>
+    <%= f.input :avatar,
+                label: '头像',
+                hint: image_tag(qiniu_image_path(check_avatar(current_user), :thumbnail => '32x32!')),
+                required: true %>
+
+    <hr />
+<!--
+  TODO: avatar图片压缩后上传
+-->
+    <%= f.input :gender, as: :radio_buttons,
+                collection: [["男", 0], ["女", 1]],
+                label: '孩子性别',
+                item_label_class: "radio-inline", item_wrapper_tag: false,
+                checked: 1,
+                required: false %>
+    <%= f.input :birthday, as: :date,
+                start_year: Date.today.year - 90,
+                end_year: Date.today.year,
+                label: '孩子生日',
+                hint: '根据孩子年龄推荐适合年龄段阅读的书籍。',
+                required: false %>
+    <%= f.input :tag_list, as: :text,
+                label: '阅读兴趣',
+                hint: '喜欢书籍类型，以,间隔，比如历史,科幻,小说。',
+                required: false %>
+    <hr />
 
     <%= f.input :password, label: '新密码', autocomplete: "off", hint: "如果不需要修改保留为空", required: false %>
     <%= f.input :password_confirmation, label: '重复密码', required: false %>

@@ -3,6 +3,9 @@
   %p
     跟着阅读记单词，制作个性化的阅读书目的单词卡片，让单词不再孤单。
 .sidebar-module
+  %h4 标签
+  = render :partial => 'books/tag', layout: 'layouts/layout'
+.sidebar-module
   %h4 英语分级书查询
   %ol.list-unstyled
     %li

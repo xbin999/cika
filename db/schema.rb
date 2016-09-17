@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160907085838) do
+ActiveRecord::Schema.define(version: 20160916092753) do
 
   create_table "books", force: :cascade do |t|
     t.string   "name"
@@ -45,6 +45,33 @@ ActiveRecord::Schema.define(version: 20160907085838) do
     t.integer  "user_id"
   end
 
+  create_table "taggings", force: :cascade do |t|
+    t.integer  "tag_id"
+    t.integer  "taggable_id"
+    t.string   "taggable_type"
+    t.integer  "tagger_id"
+    t.string   "tagger_type"
+    t.string   "context",       limit: 128
+    t.datetime "created_at"
+  end
+
+  add_index "taggings", ["context"], name: "index_taggings_on_context"
+  add_index "taggings", ["tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type"], name: "taggings_idx", unique: true
+  add_index "taggings", ["tag_id"], name: "index_taggings_on_tag_id"
+  add_index "taggings", ["taggable_id", "taggable_type", "context"], name: "index_taggings_on_taggable_id_and_taggable_type_and_context"
+  add_index "taggings", ["taggable_id", "taggable_type", "tagger_id", "context"], name: "taggings_idy"
+  add_index "taggings", ["taggable_id"], name: "index_taggings_on_taggable_id"
+  add_index "taggings", ["taggable_type"], name: "index_taggings_on_taggable_type"
+  add_index "taggings", ["tagger_id", "tagger_type"], name: "index_taggings_on_tagger_id_and_tagger_type"
+  add_index "taggings", ["tagger_id"], name: "index_taggings_on_tagger_id"
+
+  create_table "tags", force: :cascade do |t|
+    t.string  "name"
+    t.integer "taggings_count", default: 0
+  end
+
+  add_index "tags", ["name"], name: "index_tags_on_name", unique: true
+
   create_table "user_words", force: :cascade do |t|
     t.integer  "word_id",    null: false
     t.integer  "book_id"
@@ -72,9 +99,17 @@ ActiveRecord::Schema.define(version: 20160907085838) do
     t.datetime "updated_at",                          null: false
     t.string   "name"
     t.boolean  "admin"
+    t.integer  "gender",                 default: 0
+    t.date     "birthday"
+    t.integer  "last_vocab_level"
+    t.string   "avatar_file_name"
+    t.string   "avatar_content_type"
+    t.integer  "avatar_file_size"
+    t.datetime "avatar_updated_at"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
+  add_index "users", ["name"], name: "index_users_on_name", unique: true
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
 
   create_table "words", force: :cascade do |t|

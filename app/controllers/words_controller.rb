@@ -6,9 +6,11 @@ require 'json'
 require 'bing_translator'
 
 class WordsController < ApplicationController
-  before_action :show_message, only: [:new]
+  #before_action :show_message, only: [:new]
+  before_action :authenticate_user!, only: [:new, :translate]
 
   def index
+    #byebug
     @events = Event.all.paginate(page: params[:page], per_page: 20).order(created_at: :desc)
   end
 
@@ -36,7 +38,7 @@ class WordsController < ApplicationController
   def translate
     @event = Event.new(event_params)
     @event.event_type = Event.event_types["newcard"]
-    if @event.valid? 
+    if @event.valid?
       cookies[:card_name] = {value: @event.name, expires: 1.year.from_now}
       cookies[:card_age]  = {value: @event.age, expires: 1.year.from_now}
       cookies[:card_book] = {value: @event.book_name, expires: 1.year.from_now}
@@ -49,7 +51,7 @@ class WordsController < ApplicationController
       sep = get_sep(@source)
 
       if sep == "#"
-        # not #To be or not to be# follow #Harry potter, follow me# 
+        # not #To be or not to be# follow #Harry potter, follow me#
         @source.scan(/([[:word:]]+)\ *#(.*?)#/).each do |word, sentence|
           if saveto_targets(word, sentence)
             n += 1
@@ -57,7 +59,7 @@ class WordsController < ApplicationController
         end
       else
         # hello,world,hurry up,good
-        # or hello word 
+        # or hello word
         @source.split(sep).each do |word|
           if saveto_targets(word)
             n += 1
@@ -65,20 +67,20 @@ class WordsController < ApplicationController
         end
       end
       @event.count = n
-      
+
       @target.each do |word, value|
         @event.user_words.build(:word => word, :sentence => value, :book_id => @event.book_id, :user_id => @event.user_id)
       end
-      if @event.save 
+      if @event.save
         logger.info("=== Success in saving event: #{@event.id}")
-        if @error_words.empty? 
+        if @error_words.empty?
           redirect_to event_user_words_path(@event), notice: "成功创建词卡。"
         else
           redirect_to event_user_words_path(@event), notice: "成功创建词卡，剩余错误单词: #{@error_words.join(',')}"
         end
       else
         logger.error("=== Error in saving event...#{@event.errors.full_messages}")
-        flash[:error] = @event.errors.full_messages.to_sentence 
+        flash[:error] = @event.errors.full_messages.to_sentence
         render "words/new.html.haml"
       end
 
@@ -95,7 +97,7 @@ class WordsController < ApplicationController
       end
 =end
     else
-      flash[:error] = @event.errors.full_messages.to_sentence 
+      flash[:error] = @event.errors.full_messages.to_sentence
       render "words/new.html.haml"
       #redirect_to translate_path
     end
@@ -161,7 +163,7 @@ private
           word.explains << link << "\n"
         end
       end
-      if word.save 
+      if word.save
         logger.info("=== Success in saving word: #{word.id}:#{word.name}")
       else
         logger.error("=== Error in saving word...#{word.errors.full_messages}")
@@ -175,7 +177,7 @@ private
   def saveto_targets(word, sentence=nil)
     rv = false
 
-    if !word.strip.blank? 
+    if !word.strip.blank?
       w = convert2object(word)
       if w != nil
         @target[w] = sentence

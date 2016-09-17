@@ -18,10 +18,11 @@
         - if user_signed_in?
           %li.dropdown.pull-right
             %a.dropdown-toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :role => "button"}
+              = image_tag qiniu_image_path(check_avatar(current_user), :thumbnail => '32x32!')
               = current_user.name
               %span.caret
             %ul.dropdown-menu
-              %li= link_to "账户", edit_user_registration_path
+              %li= link_to "修改资料", edit_user_registration_path
               %li.divider{:role => "separator"}
               %li= link_to "退出", destroy_user_session_path, method: :delete
         -else
@@ -39,7 +40,7 @@
         %span.icon-bar
         %span.icon-bar
         %span.icon-bar
-    
+
     / The Collapsing items            navbar-left or navbar-right
     .collapse.navbar-collapse.navbar-left
       / pull-right keeps the drop-down in line
@@ -47,7 +48,7 @@
         %li= link_to "阅读", books_path
         %li= link_to "词卡", cards_path
         %li= link_to "测试", "http://testyourvocab.com/", :target => "_blank"
-  -#  
+  -#
     / Additional navbar items
     .collapse.navbar-collapse.navbar-right
       / pull-right keeps the drop-down in line

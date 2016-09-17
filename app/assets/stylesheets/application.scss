@@ -24,7 +24,7 @@ body {
   .form-inline .form-group input {
     width: 300px;
   }
-} 
+}
 
 /*
  * Override Bootstrap's default container.
@@ -53,4 +53,9 @@ body {
   .container {
     width: 970px;
   }
+}
+
+.date select.date.form-control {
+  width: auto;
+  display: inline-block;
 }

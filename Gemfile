@@ -68,6 +68,8 @@ gem 'paperclip'
 #gem 'paperclip-qiniu'
 gem 'paperclip-qiniu', :git => "git://github.com/lidaobing/paperclip-qiniu"
 
+gem 'acts-as-taggable-on', '~> 4.0'
+
 group :production do
   gem 'pg'
 end

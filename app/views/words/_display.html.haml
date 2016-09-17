@@ -9,6 +9,8 @@
       /=event.to_view_str
       - case event.event_type
       - when "newcard"
+        / TODO: display avatar
+        /= image_tag qiniu_image_path(check_avatar(event.user_id), :thumbnail => '32x32!')
         ="@#{event.name} 制作了《"
         - if event.book_id
           %a{:href => book_path(event.book_id)}#{event.book_name}

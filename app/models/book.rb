@@ -8,11 +8,14 @@ class Book < ActiveRecord::Base
 
   has_many :events
 
+  acts_as_taggable # Alias for acts_as_taggable_on :tags
+  acts_as_taggable_on :genres
+
   before_post_process :rename_image_file
 
   def rename_image_file
     extension = File.extname(cover_file_name).downcase
     self.cover.instance_write(:file_name, "#{SecureRandom.hex(12)}#{extension}")
-    logger.debug("=== rename to #{self.cover_file_name}")
+    #logger.debug("=== rename to #{self.cover_file_name}")
   end
 end
